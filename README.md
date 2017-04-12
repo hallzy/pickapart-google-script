@@ -24,7 +24,7 @@ that match that model that are still currently on the lot.
 #### Column A
 
 Column `A` is used to hold the car model name that you want to look for
-(example: "civic")".
+(example: "civic").
 
 #### Column B
 
