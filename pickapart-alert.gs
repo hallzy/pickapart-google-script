@@ -3,6 +3,8 @@
 // Change these variables variable
 var spreadsheet_id = "FILL THIS!"
 var debug = false
+var branch_to_check_for_updates = "master";
+var auto_update_check = true;
 
 
 
@@ -48,6 +50,20 @@ function getCarURL(model) {
   return url;
 }
 
+function email_alert_for_script_update(newhash, oldhash) {
+  var body = "An update has been made to the script.";
+  body = body + "\n\n";
+  body = body + "Check \"https://github.com/hallzy/pickapart-google-script\"";
+  body = body + "\n\n";
+  body = body + "The last time an update check was made the current commit ";
+  body = body + "hash was \"" + oldhash + "\"";
+  body = body + "\n\n";
+  body = body + "Now the current hash is \"" + newhash + "\"";
+  var subject = "Automated Message: Pickapart Script Ready for Update"
+  var e = new Email(subject, body);
+  e.Send();
+}
+
 function stringifyElement(car) {
   var string = "  - Added on " + car['date_added'] + " - "
   string += car['year'] + " " + car['make'] + " " + car['model'] + " - "
@@ -85,6 +101,38 @@ function getResponse(model) {
   return response;
 }
 
+function check_for_updates(sheet) {
+  // Get the URL to check. This will be the github page with the list of commits
+  // for the specified branch
+  var url = "https://github.com/hallzy/pickapart-google-script/commits/";
+  url = url + branch_to_check_for_updates;
+
+  // Get the page as a string
+  var response = UrlFetchApp.fetch(url).getContentText();
+
+  // Search for this regex to get the latest hash - Only use index 1 for this.
+  // Index 0 is the whole match, while index 1 is just the part that is matched
+  // by the part in parenthesis
+  var newhash = response.match(/data-clipboard-text="(.*)" data-copied-hint/);
+  newhash = newhash[1];
+
+  var oldhash;
+  // Get the previsously saved hash from the sheet
+  if (sheet.isVersionHashBlank()) {
+    Logger.log("hash is initialized to: " + newhash);
+    sheet.setVersionHash(newhash)
+  }
+  else {
+    oldhash = sheet.getVersionHash()
+    if (newhash != oldhash) {
+      Logger.log("hash is now: " + newhash);
+      email_alert_for_script_update(newhash, oldhash);
+      sheet.setVersionHash(newhash)
+    }
+  }
+  Logger.log("Old hash is: " + oldhash);
+}
+
 
 // Google Sheet Class//{{{
 function GoogleSheet() {
@@ -108,6 +156,18 @@ function GoogleSheet() {
     this.base.getRange(model+1, 2).setValue(string);
   };
 
+  this.getVersionHash = function() {
+    return this.getData[0][3]
+  };
+
+  this.isVersionHashBlank = function() {
+    return this.base.getRange(1, 4).isBlank();
+  };
+
+  this.setVersionHash = function(hash) {
+    this.base.getRange(1, 4).setValue(hash);
+  };
+
   this.Update = function() {
     this.base       = SpreadsheetApp.openById(spreadsheet_id).getSheets()[0];
     this.getData    = this.base.getDataRange().getValues();
@@ -119,6 +179,10 @@ function GoogleSheet() {
 function run() {
   // Get the google sheet with pickapart data
   var sheet = new GoogleSheet();
+
+  if (auto_update_check == true) {
+    check_for_updates(sheet);
+  }
 
   var send_car_email=false;
 

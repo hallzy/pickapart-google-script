@@ -33,6 +33,12 @@ your model search. You will never have to change this column. It is used by the
 script only to figure out what cars are new or have been removed since the last
 execution of the script.
 
+#### Column D
+
+This column is currently only used for cell `D1` to hold the current commit hash
+of the program. This is used by the script to figure out if an update has been
+made to the script since the last time it was executed.
+
 ### Continuing with Instructions
 
 Now open the script from the first step. There is a line at the top of the file
@@ -131,6 +137,47 @@ every execution of the script.
 `var debug = false` means that you do NOT want to get emails with the logs
 at all.
 
+### var branch_to_check_for_updates
+
+This variable tells the script what branch to check for updates. It will use
+this to see if any new commits have come in since the last time the update
+function was run.
+
+#### Default
+
+The default setting is `"master"`.
+
+#### Possible Values:
+
+`var branch_to_check_for_updates = "master"`
+
+`var branch_to_check_for_updates = "testing"`
+
+`var branch_to_check_for_updates = "dev"`
+
+
+### var auto_update_check
+
+This variable tells the script if you want the update function to run
+automatically when you run your script. When the update script is run you will
+get a email if an update has happened since the last time the script ran. You
+will not receive an email at any other time.
+
+Note that this will **NOT** update the script. It will just warn you of updates
+that have occurred.
+
+#### Default
+
+The default setting is `true`.
+
+#### Possible Values:
+
+`var auto_update_check = true` Means to check for updates automatically before
+looking for TV Shows.
+
+`var auto_update_check = false` Means that the script will never automatically
+check for updates for you. So you will need to manually run the
+`check_for_updates` function in order to get updates.
 
 ## Questions
 
