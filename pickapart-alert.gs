@@ -15,10 +15,7 @@ function Email(subject, body) {
   this.subject = subject;
   this.recipient = Session.getActiveUser().getEmail();
   this.Send = function() {
-    var log = "Testing Mode: Email = recipient: " + this.recipient;
-    log = log + ", subject: " + this.subject + ", body: ";
-    log = log + this.body;
-    Logger.log(log);
+    MailApp.sendEmail(this.recipient, this.subject, this.body);
   };
 }
 
