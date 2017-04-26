@@ -50,6 +50,13 @@ function getCarURL(model) {
   return url;
 }
 
+function getCarURL_no_json(model) {
+  var url ="http://stmhall.ca/pickapart.php?query=select * from cars where model = '" + model + "'"
+
+  Logger.log("URL: " + url);
+  return url;
+}
+
 function email_alert_for_script_update(newhash, oldhash) {
   var body = "An update has been made to the script.";
   body = body + "\n\n";
@@ -257,7 +264,11 @@ function run() {
 
 
     Logger.log(model + " (" + api_num_cars + " On the Lot)");
+    var car_url = getCarURL_no_json(model);
+    car_url = car_url.replace(/ /g, "%20");
+    car_url = car_url.replace(/'/g, "%27");
     email_cars_body += model + " (" + api_num_cars + " On the Lot)\n"
+    email_cars_body += car_url + ";\n"
 
     if (num_new_cars > 0) {
       send_car_email=true
