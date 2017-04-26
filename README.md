@@ -179,6 +179,29 @@ looking for TV Shows.
 check for updates for you. So you will need to manually run the
 `check_for_updates` function in order to get updates.
 
+### var extra_recipients
+
+This variable tells the script that you want to send email notifications to
+other people. This variable will hold a list of all the emails you want to email
+your car list to (Note that settings this will not send the extra recipients any
+error or log messages, just car updates).
+
+#### Default
+
+The default setting is `[]`, which is an empty list.
+
+#### Possible Values:
+
+The values can be any number of comma separated emails.
+
+Examples:
+
+`var extra_recipients = ["test@email.com"]`
+
+`var extra_recipients = ["test@email.com", "test2@email.com", "test3@email.com"]`
+
+Note: Remember the quotation marks around the email address.
+
 ## Questions
 
 ### What if I Accidentally mess with the data in the sheet?

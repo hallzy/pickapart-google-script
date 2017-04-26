@@ -5,6 +5,7 @@ var spreadsheet_id = "FILL THIS!"
 var debug = false
 var branch_to_check_for_updates = "master";
 var auto_update_check = true;
+var extra_recipients = []
 
 
 
@@ -18,6 +19,12 @@ function Email(subject, body) {
   this.recipient = Session.getActiveUser().getEmail();
   this.Send = function() {
     MailApp.sendEmail(this.recipient, this.subject, this.body);
+  };
+  this.SendToOthers = function() {
+    for (var i = 0; i < extra_recipients.length; i++) {
+      Logger.log("Sending \"" + this.subject + "\" email to \"" + extra_recipients[i] + "\"");
+      MailApp.sendEmail(extra_recipients[i], this.subject, this.body);
+    }
   };
 }
 
@@ -40,6 +47,7 @@ function email_cars() {
   e.body = email_cars_body
   e.subject = "Pickapart Script: Lot Update"
   e.Send();
+  e.SendToOthers();
 }
 
 
