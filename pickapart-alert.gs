@@ -52,14 +52,14 @@ function email_cars() {
 
 
 function getCarURL(model) {
-  var url ="http://stmhall.ca/pickapart_json.php?query=select * from cars where model = '" + model + "'"
+  var url ="http://stmhall.ca/pickapart_json.php?query=select * from lot where model = '" + model + "'"
 
   Logger.log("URL: " + url);
   return url;
 }
 
 function getCarURL_no_json(model) {
-  var url ="http://stmhall.ca/pickapart.php?query=select * from cars where model = '" + model + "'"
+  var url ="http://stmhall.ca/pickapart.php?query=select * from lot where model = '" + model + "'"
 
   Logger.log("URL: " + url);
   return url;
