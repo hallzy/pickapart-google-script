@@ -3,7 +3,7 @@
 // Change these variables variable
 var spreadsheet_id = "FILL THIS!"
 var debug = false
-var auto_update_check = true;
+var auto_update_check = false;
 var branch_to_check_for_updates = "master";
 var api_token = ""
 var extra_recipients = []
