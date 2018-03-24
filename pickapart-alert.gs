@@ -5,7 +5,7 @@ var spreadsheet_id = "FILL THIS!"
 var debug = false
 var auto_update_check = true;
 var branch_to_check_for_updates = "master";
-var api_token = "11214995c39c6246d816b16e8b7a0c4e8ff72893"
+var api_token = ""
 var extra_recipients = []
 
 
