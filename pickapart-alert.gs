@@ -3,8 +3,9 @@
 // Change these variables variable
 var spreadsheet_id = "FILL THIS!"
 var debug = false
-var branch_to_check_for_updates = "master";
 var auto_update_check = true;
+var branch_to_check_for_updates = "master";
+var api_token = "11214995c39c6246d816b16e8b7a0c4e8ff72893"
 var extra_recipients = []
 
 
@@ -119,19 +120,44 @@ function getResponse(model) {
 function check_for_updates(sheet) {
   // Get the URL to check. This will be the github page with the list of commits
   // for the specified branch
-  var url = "https://github.com/hallzy/pickapart-google-script/commits/";
+  var url = "https://api.github.com/repos/hallzy/pickapart-google-script/commits/"
   url = url + branch_to_check_for_updates;
 
-  // Get the page as a string
-  var response = UrlFetchApp.fetch(url).getContentText();
-  response = response.slice(response.indexOf("clipboard-copy"))
-  response = response.slice(response.indexOf("value="))
+  // If an API token has been specified then use it, otherwise, don't.
+  if (api_token !== "") {
+    url = url + "?access_token="
+    url = url + api_token
+  }
+  Logger.log("API URL = " + url)
 
-  // Search for this regex to get the latest hash - Only use index 1 for this.
-  // Index 0 is the whole match, while index 1 is just the part that is matched
-  // by the part in parenthesis
-  var newhash = response.match(/value="(.*)"/);
-  newhash = newhash[1];
+  // Get the page as a string
+  try {
+    var newhash = UrlFetchApp.fetch(url).getContentText()
+  }
+  catch(e) {
+    Logger.log("Github API Error. No commit found.")
+    email_error(e)
+    throw e
+  }
+
+  try {
+    newhash = JSON.parse(newhash)
+  }
+  catch(e) {
+    Logger.log("Failed to Parse \"newhash\"")
+    email_error(e)
+    throw e
+  }
+
+  try {
+    newhash = newhash["sha"]
+  }
+  catch(e) {
+    Logger.log("No hash in JSON")
+    email_error(e)
+    throw e
+  }
+  Logger.log(newhash)
 
   var oldhash;
   // Get the previsously saved hash from the sheet
