@@ -118,7 +118,7 @@ function getResponse(model) {
 }
 
 function check_for_updates(sheet) {
-  // Get the URL to check. This will be the github page with the list of commits
+  // Get the URL to check. This will be the Github page with the list of commits
   // for the specified branch
   var url = "https://api.github.com/repos/hallzy/pickapart-google-script/commits/"
   url = url + branch_to_check_for_updates;
@@ -160,7 +160,7 @@ function check_for_updates(sheet) {
   Logger.log(newhash)
 
   var oldhash;
-  // Get the previsously saved hash from the sheet
+  // Get the previously saved hash from the sheet
   if (sheet.isVersionHashBlank()) {
     Logger.log("hash is initialized to: " + newhash);
     sheet.setVersionHash(newhash)

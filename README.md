@@ -28,7 +28,7 @@ Column `A` is used to hold the car model name that you want to look for
 
 #### Column B
 
-This Column Holds a json string of all the car data from pickapart that matches
+This Column Holds a JSON string of all the car data from pickapart that matches
 your model search. You will never have to change this column. It is used by the
 script only to figure out what cars are new or have been removed since the last
 execution of the script.
@@ -112,7 +112,7 @@ All variables must contain a value of some kind.
 ### var spreadsheet_id
 
 This is a string that comes from the URL of the spreadsheet you will use to
-store your tv shows. For example, if your spreadsheet has the URL
+store your TV shows. For example, if your spreadsheet has the URL
 `https://docs.google.com/spreadsheets/d/1RSklW9SKI535TG0LnH9cjU2c3spLtnbPBAKWahUWO7I/edit#gid=0`,
 then your `spreadsheet_id` is `"1RSklW9SKI535TG0LnH9cjU2c3spLtnbPBAKWahUWO7I"`,
 with the quotes included.
@@ -272,5 +272,5 @@ the first time it was populating that cell.
 * `pickapart.ca` for their website that gives a listing of all the cars on their
   lot
 * myself (`http://stmhall.ca/pickapart_json.php`) for automatically populating a
-  database with all of this information and serving it as json for easy
+  database with all of this information and serving it as JSON for easy
   manipulations
